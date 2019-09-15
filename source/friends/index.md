@@ -2,9 +2,8 @@
 title: friends
 date: 2019-09-01
 ---
-## 友链
 
-### XDSEC 2018
+## select link from friends where grade == 2018
 
 [Ruby](https://kurosawaruby.cn)
 [EndCat](https://endcat.cn)
@@ -12,7 +11,14 @@ date: 2019-09-01
 [Recluse*暂无]()
 [Fl@g](http://www.f1ag.com)
 
-### XDSEC 学长
+## select link from friends where grade == 2019
+
+[赤道企鹅](https://eqqie.cn)
+[Reverier](https://www.wootec.top)
+
+## select link from friends where grade <= 2018 group by affiliation
+
+### XDSEC
 
 [k0rz3n](https://www.k0rz3n.com/)
 [Pupile](http://pupiles.com/)
