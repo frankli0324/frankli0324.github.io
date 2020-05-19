@@ -10,11 +10,13 @@ date: 2019-09-01
 [Happy](http://happyers.top)
 [Recluse]()
 [Fl@g](http://www.f1ag.com)
+[W@llet](http://39.105.105.208)
 
 ## select link from friends where grade = 2019
 
 [赤道企鹅](https://eqqie.cn)
 [Reverier](https://www.wootec.top)
+[Ga1@xy](http://www.ga1axy.top/)
 
 ## select link from friends where grade <= 2018 group by affiliation
 
