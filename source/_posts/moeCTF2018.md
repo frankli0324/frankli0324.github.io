@@ -2,8 +2,8 @@
 title: moeCTF2018
 date: 2018-08-26
 tags: 
-    - CTF
-    - moeCTF
+	- CTF
+	- Writeup
 ---
 
 > 既然web组的人多。。那先写web？
