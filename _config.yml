@@ -72,8 +72,20 @@ pagination_dir: page
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
-plugin:
-  - hexo-generator-feed
+plugins:
+  gitalk:
+    clientID: 5955d155fe2ea768241e
+    clientSecret: f96bbda9ff434950217f24f7f9369f8b8de3b025
+    repo: frankli0324.github.io
+    owner: frankli0324
+    admin: 
+      - frankli0324
+    distractionFreeMode: false
+
+sitemap:
+  path: sitemap.xml
+  rel: true
+
 feed:
   type: atom
   path: atom.xml
