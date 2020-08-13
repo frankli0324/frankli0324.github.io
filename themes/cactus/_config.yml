@@ -26,7 +26,7 @@ nav:
 # only 'mail' is an exception.
 social_links:
   github: https://github.com/frankli0324
-  mail: frankli0324@hotmail.com
+  mail: mailto:frankli0324@hotmail.com
   qq: tencent://AddContact/?uin=745679136
 
 # Customize the overview with displaying a tagcloud on the index page.
@@ -40,7 +40,7 @@ tags_overview: true
 #   - sort_updated: sort posts by last modification date instead of creation date.
 posts_overview:
   show_all_posts: false
-  post_count: 5
+  post_count: 6
   sort_updated: false
 
 # Customize the archive view.
@@ -145,4 +145,4 @@ baidu_analytics:
 # Fill in you Gravatar user id / email if you want to use your gravatar as the
 # logo and/or favicons of you website.
 gravatar:
-  email: name@email.com
+  email: frankli0324@hotmail.com
