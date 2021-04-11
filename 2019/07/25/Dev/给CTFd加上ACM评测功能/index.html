@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="闲得蛋疼.jpg  去年参加西电办的中学生CTF嫖了五千块钱，今年就能来西电办中学生CTF.jpg，真实的一批 去年的ACM题是直接起了个hustoj(我记得)，这样就需要工作人员不断地检查榜单并且手动发放flag，工作量大且效率低。于是我就来整个CTFdOJ，交的代码AC了自动加分。 前置 CTFd plugin 与其说是“魔改CTFd”不如说“给CTFd整个插件” CTFd自带的动态积分题目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="给CTFd加上ACM评测功能">
+<meta property="og:url" content="https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/index.html">
+<meta property="og:site_name" content="Frank">
+<meta property="og:description" content="闲得蛋疼.jpg  去年参加西电办的中学生CTF嫖了五千块钱，今年就能来西电办中学生CTF.jpg，真实的一批 去年的ACM题是直接起了个hustoj(我记得)，这样就需要工作人员不断地检查榜单并且手动发放flag，工作量大且效率低。于是我就来整个CTFdOJ，交的代码AC了自动加分。 前置 CTFd plugin 与其说是“魔改CTFd”不如说“给CTFd整个插件” CTFd自带的动态积分题目">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-11T21:39:30.000Z">
+<meta property="article:author" content="Frank Li">
+<meta property="article:tag" content="杂项">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>给CTFd加上ACM评测功能</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+<!-- hexo injector head_end start -->
+<style>
+    .card {
+        border-radius: 5px;
+        border: 1px solid;
+        border-color: #eee #ddd #bbb;
+        box-shadow: rgba(0,0,0,.14) 0 1px 3px;
+        text-align: center;  
+        float: left;
+        padding: 10px;
+        margin: 10px;
+    }
+    .card .avatar {
+        display: block;
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+        align-content: center;
+        margin: auto
+    }
+    .card .title { white-space: nowrap; }
+    @media screen and (max-width: 480px) {
+        .card { width: calc(33% - 20px); }
+    }
+    @media screen and (max-width: 600px) and (min-width: 481px) {
+        .card { width: calc(25% - 20px); }
+    }
+    @media screen and (min-width: 601px) {
+        .card { width: calc(20% - 20px); }
+    }
+    .card-container { width: 90%; }
+</style><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Frank" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="header-post">
+  <a id="menu-icon" href="#" aria-label="icons.menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="icons.menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "icons.top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/friends/">友链</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2019/08/06/Misc/2019%E6%9A%91%E6%9C%9F%E7%89%9B%E5%AE%A2%E5%A4%9A%E6%A0%A1/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2019/04/22/Security/Writeup/CISCN%202019/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&text=给CTFd加上ACM评测功能"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&title=给CTFd加上ACM评测功能"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&is_video=false&description=给CTFd加上ACM评测功能"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=给CTFd加上ACM评测功能&body=Check out this article: https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&title=给CTFd加上ACM评测功能"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&title=给CTFd加上ACM评测功能"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&title=给CTFd加上ACM评测功能"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&title=给CTFd加上ACM评测功能"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&name=给CTFd加上ACM评测功能&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&t=给CTFd加上ACM评测功能"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">前置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CTFd-plugin"><span class="toc-number">1.1.</span> <span class="toc-text">CTFd plugin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%99%E7%AE%B1%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-number">1.2.</span> <span class="toc-text">沙箱的选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%86%B3%E5%AE%9A"><span class="toc-number">1.3.</span> <span class="toc-text">一些决定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%92%B8%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">撸代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#plugin"><span class="toc-number">2.1.</span> <span class="toc-text">plugin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#translation-layer"><span class="toc-number">2.2.</span> <span class="toc-text">translation layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#translation-layer-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="toc-number">2.3.</span> <span class="toc-text">translation layer::权限控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">总体流程</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        给CTFd加上ACM评测功能
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Frank Li</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-07-24T16:00:00.000Z" itemprop="datePublished">2019-07-25</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag">杂项</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <blockquote>
+<p>闲得蛋疼.jpg</p>
+</blockquote>
+<p>去年参加西电办的中学生CTF嫖了五千块钱，今年就能来西电办中学生CTF.jpg，真实的一批</p>
+<p>去年的ACM题是直接起了个hustoj(我记得)，这样就需要工作人员不断地检查榜单并且手动发放flag，工作量大且效率低。于是我就来整个CTFdOJ，交的代码AC了自动加分。</p>
+<h2 id="前置">前置</h2>
+<h3 id="CTFd-plugin">CTFd plugin</h3>
+<p>与其说是“魔改CTFd”不如说“给CTFd整个插件”<br>
+CTFd自带的动态积分题目就是一个典型的插件。这个插件给CTFd添加了一种题目。<br>
+那么添加“ACM题目类型”理所当然也应该写成一个插件</p>
+<h3 id="沙箱的选择">沙箱的选择</h3>
+<p>评测沙箱需要用来控制程序的行为，而且是OJ的核心部件，要精确统计程序的运行时间/空间占用信息。<br>
+由于有很多现成的，那我就找一个拿来用吧<br>
+综合功能和LICENSE等多种因素，最终选择了QDOJ的Judger</p>
+<h3 id="一些决定">一些决定</h3>
+<ul>
+<li>将评测机与CTFd分离开来。
+<ul>
+<li>考虑到CTFd只是一个题目平台，并不应该负责繁重的计算任务</li>
+<li>将评测机和平台放在一起有修改成绩的隐患</li>
+</ul>
+</li>
+<li>做安全的同学大概对Python更加熟悉，于是支持对Python程序的评测</li>
+<li>通过配置文件能随时添加新的语言支持</li>
+</ul>
+<h2 id="撸代码">撸代码</h2>
+<h3 id="plugin">plugin</h3>
+<pre><code>负责添加/展示/设置题目，并在评测正确时为相应队伍加上对应的分数
+</code></pre>
+<p>折腾了半天。。。推翻了以前越写越复杂还要改CTFd自己的数据库的写法以后重做了这个东西：<a target="_blank" rel="noopener" href="https://github.com/frankli0324/CTFd-ICPC-challenges">ICPC Plugin</a></p>
+<h3 id="translation-layer">translation layer</h3>
+<pre><code>主要负责接受来自CTFd plugin的评测请求
+缓存测试用例，避免每次都要把40多M的input/output重新发一遍
+</code></pre>
+<p>由于需要不同的功能，还是用flask方便一点。通过不同的URL来定位不同的功能。<br>
+于是有了<a target="_blank" rel="noopener" href="https://github.com/frankli0324/JudgeServer">JudgeServer</a><br>
+对于不同的语言支持，可以在worker.json中配置。其中可以配置编译命令，执行命令，并且通过向命令中注入变量来控制细节。<br>
+解释型语言不写编译命令就是了。</p>
+<h3 id="translation-layer-权限控制">translation layer::权限控制</h3>
+<p>ACM沙箱最头疼的就是权限。<br>
+首先，用了别人的沙箱，可以丢过给别人。<br>
+其次，这货跑在docker里头，断了外网。希望可以一劳永逸。<br>
+还有，具体的权限控制<strong>假定</strong>都能通过命令行参数完成。比如<br>
+java的<code>-Djava.security.manager</code>选项<br>
+Python可以跑在venv里头</p>
+<h2 id="总体流程">总体流程</h2>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">                   +--------+            +--------+</span><br><span class="line">       +-----------+        |            |        |</span><br><span class="line">       |     R     |        |     1      |        |</span><br><span class="line">       v           |        +------------&gt;        |</span><br><span class="line">+------+---+       |        |            |        |</span><br><span class="line">|          |       |        &lt;------------+        |</span><br><span class="line">|contestant|       |  CTFd  |     2      | Judger |</span><br><span class="line">|          |       | Plugin |            |        |</span><br><span class="line">+------+---+       |        |            |        |</span><br><span class="line">       |           |        |     3      |        |</span><br><span class="line">       |     S     |        +------------&gt;        |</span><br><span class="line">       +----------&gt;+        |            |        |</span><br><span class="line">                   +--------+            +--------+</span><br></pre></td></tr></table></figure>
+<p>上图中1、2、3分别表示CTFd在接收到一次submission(S)后与Judger可能的三种行为</p>
+<table>
+<thead>
+<tr>
+<th>code</th>
+<th>action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>发送代码+题目id+语言，进行评测</td>
+</tr>
+<tr>
+<td>2</td>
+<td>返回评测结果与评测过的最后一组数据的运行情况</td>
+</tr>
+<tr>
+<td>3</td>
+<td>发送题目测试用例的URL<sup><strong>todo</strong></sup>+设定的资源限制，缓存题目评测信息</td>
+</tr>
+</tbody>
+</table>
+<p>在收到一次Submission(S)后，Plugin首先尝试进行<code>1</code>。<br>
+如果Judger此时并没有缓存过这个题目，则会返回评测错误，此时Plugin会尝试进行<code>3</code>，Judger则会缓存当前题目<br>
+Plugin执行完<code>3</code>后会再次尝试<code>1</code>。</p>
+<blockquote>
+<p>真是憨憨，自嗨行为</p>
+</blockquote>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"5955d155fe2ea768241e","clientSecret":"f96bbda9ff434950217f24f7f9369f8b8de3b025","repo":"frankli0324.github.io","owner":"frankli0324","admin":["frankli0324"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+  </div>
+</article>
+
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/friends/">友链</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">前置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CTFd-plugin"><span class="toc-number">1.1.</span> <span class="toc-text">CTFd plugin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%99%E7%AE%B1%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-number">1.2.</span> <span class="toc-text">沙箱的选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%86%B3%E5%AE%9A"><span class="toc-number">1.3.</span> <span class="toc-text">一些决定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%92%B8%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">撸代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#plugin"><span class="toc-number">2.1.</span> <span class="toc-text">plugin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#translation-layer"><span class="toc-number">2.2.</span> <span class="toc-text">translation layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#translation-layer-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="toc-number">2.3.</span> <span class="toc-text">translation layer::权限控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">总体流程</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&text=给CTFd加上ACM评测功能"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&title=给CTFd加上ACM评测功能"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&is_video=false&description=给CTFd加上ACM评测功能"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=给CTFd加上ACM评测功能&body=Check out this article: https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&title=给CTFd加上ACM评测功能"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&title=给CTFd加上ACM评测功能"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&title=给CTFd加上ACM评测功能"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&title=给CTFd加上ACM评测功能"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&name=给CTFd加上ACM评测功能&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.frankli.site/2019/07/25/Dev/%E7%BB%99CTFd%E5%8A%A0%E4%B8%8AACM%E8%AF%84%E6%B5%8B%E5%8A%9F%E8%83%BD/&t=给CTFd加上ACM评测功能"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2017-2021
+    Frank Li
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/friends/">友链</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131292248-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-131292248-2');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+</html>
