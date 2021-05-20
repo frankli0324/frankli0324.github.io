@@ -9,10 +9,11 @@ tags:
 > 既然web组的人多。。那先写web？
 
 ## WEB
+
 #### Where is the Flag?
 
 看源代码，flag在注释里
-	
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -30,10 +31,12 @@ tags:
 #### GET/POST
 
 用请求工具进行get/post请求，带个flag参数
-	
 
+```http
 GET /moectf/get/index.php?flag= HTTP/1.1
 Host: 120.77.152.169:8088
+
+```
 
 moectf{GEt_13_the_ba5ic_method}
 moectf{Post_1s_the_sEcond_Method}
@@ -54,6 +57,7 @@ php弱类型比较，常用md5:
 md5(‘240610708’) == md5(‘QNKCDZO’)
 md5(‘aabg7XSs’) == md5(‘aabC9RqS’)
 ```
+
 等等
 
 php类型比较说明文档
@@ -99,21 +103,22 @@ flag是啥？不重要了
 #### PHP弱类型的复仇
 
 先干啥好呢？F12啊
-	
+
 ```php
 $pattern='/^(?=[1-9])(?=.[A-Z]).{10,12}$/';
 #匹配以一个数字开头，紧跟一个大写字母的长度为10-12的串
 $gugugu=$_GET['gugugu'];
 if (preg_match($pattern, $gugugu)===0) {
-	echo "正则看懂了嘛";#看懂啦
+    echo "正则看懂了嘛";#看懂啦
 }
 else{
-	$secret="******";
-	if ($gugugu==$secret) {
-		echo "tqdl，给师傅递flag<br>".$flag;
-	}
+    $secret="******";
+    if ($gugugu==$secret) {
+        echo "tqdl，给师傅递flag<br>".$flag;
+    }
 }
 ```
+
 。
 这道题。。。。ORZ dalao。。。关键在于“以一个数字开头，紧跟一个大写字母的长度为10-12的串”如何表示一个数字，构造一个弱类型比较。
 0x?小写。pass

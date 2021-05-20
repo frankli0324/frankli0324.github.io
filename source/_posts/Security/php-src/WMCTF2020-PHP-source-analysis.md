@@ -3,6 +3,8 @@ title: WMCTF2020 PHP source analysis
 date: 2020/08/05
 tags:
     - CTF
+    - Writeup
+    - php-src
 ---
 
 WMCTF 2020中[赵师傅](https://zhaoj.in)出了一道PHP源码审计 `Make PHP Great Again`。  
@@ -81,7 +83,9 @@ PHP_MINIT_FUNCTION(phar)
 
 `tsrm_realpath`返回了NULL。看上去没问题，但是让我们回到`zend_include_or_eval`。按照开发者的逻辑，`tsrm_realpath`返回NULL意味着出现了问题，理应抛出一个异常（在PHP中为`execute_globals.exception`，即`EG(exception)`），然而纵观源码，此处并没有调用`zend_throw_exception`抛出异常。
 
-所以我们直接走到了`zend_stream_open`。这时我们遇到了另一个PHP_API，参考`zend_resolve_path`，我们能够找到"真正的"`zend_stream_open`为`php_stream_open_for_zend`。
+所以我们直接走到了`zend_stream_open`。这时我们遇到了另一个PHP_API，参考`zend_resolve_path`，我们能够找到"真正的"`zend_stream_open`为`php_stream_open_for_zend`。可以看到它对`php_stream_open_wrapper`进行了包装，而`wrapper`又是一个指向`_php_stream_open_wrapper_ex`(main/streams/streams.c:2057)的宏
+
+跟进来，仍然有对`zend_resolve_path`的调用
 
 {% asset_img stream_open.png 梅开二度 %}
 
@@ -176,10 +180,17 @@ https://github.com/torvalds/linux/search?q=MAXSYMLINKS&unscoped_q=MAXSYMLINKS
 
 无敌的Linux竟然是把这个值写死成40的，nb，属实nb
 
-至此，我们有了一个payload，即`"/proc/self/root"*41+/flag`
+至此，我们有了一个payload，即`"/proc/self/root"*21+/flag`
+
+payload中：`/proc/self/root`提供了两层symlink（`/proc/self`指向`/proc/[pid]`），也就是说重复21次我们将得到42层symlink，比lstat能够处理的层数多出两层。
 
 ## 总结
 
 * 在软件开发的过程中，要有一个统一的异常处理机制，不要一会返回0，一会抛异常的
 * 要和一起写代码的沟通好，写好文档（其实`virtual_file_ex`上面注释里写了，返回0是正常，1是有错，我估计调用的人就没好好看（逃））
 * 要保证一个操作的一致性，比如这个`require_once`就因为内部前后不一致导致了绕过
+
+## 备注
+
+* 源码分析基于PHP 7.4.5，截止[8.0.0-beta1](https://github.com/php/php-src/blob/44ad2db15fe786b07ce793624885e0c43e0af897/Zend/zend_virtual_cwd.c#L885) php 仍然使用lstat的返回值作为文件是否存在的依据
+* 在源码分析的过程中还有一个地方可能导致类似的问题，有兴趣的自己看，此处不点明（

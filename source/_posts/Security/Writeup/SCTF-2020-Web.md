@@ -3,7 +3,7 @@ title: SCTF 2020 两道Web题 Writeup
 tags: 
     - Writeup
     - CTF
-date: 2020/7/7
+date: 2020-7-7
 ---
 
 ## UnsafeDefenseSystem
