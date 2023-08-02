@@ -3,6 +3,8 @@ title: friends
 date: 2019-09-01
 ---
 
+<!-- https://ptlogin2.qq.com/getface?imgtype=1&uin={} -->
+
 ## select link from friends where grade = 2018
 
 {% friendlinks
@@ -43,7 +45,7 @@ date: 2019-09-01
 [avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=YiacGbJnNBQq60EljGSrECw&s=100]
 %}
 
-## select link from friends where grade = 2019
+## select link from friends where grade >= 2019
 
 {% friendlinks
 [url=https://eqqie.cn]
@@ -61,13 +63,35 @@ date: 2019-09-01
 [url=http://lukbash.com/]
 [title=Lunatic]
 [avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=1zQw5PJpiasX24VU5aJaUag&s=100]
+
+[url=https://cdcq.github.io/]
+[title=cdcq]
+[avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=f59nKM0AXoszkicHBVyC4OQ&s=100]
+
+[url=https://innerspace-hs.github.io]
+[title=含树]
+[avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=ZlptaVS9V9ficujvXdtESOw&s=100]
+
+[url=BlackBird-BB.github.io]
+[title=BlackBird]
+[avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=WxzXYnfNZ4sTe7Qtib0liaNA&s=100]
+
+[url=https://kyriota.com/]
+[title=κνгιоτα]
+[avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=r4vqWicWX2Aia7ACcJwBHBbw&s=100]
+
+[url=https://zeroy.site/]
+[title=zeroy]
+[avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=FzN6iaEpfYFmuMibAsKWLwkQ&s=100]
 %}
 
-## select link from friends where grade <= 2018 group by affiliation
-
-### XDSEC
+## select link from friends where grade <= 2017
 
 {% friendlinks
+[url=https://bush.km3.co/]
+[title=w1nd]
+[avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=Lm2sL3SsNQvRrydltrD4hA&s=100]
+
 [url=https://www.k0rz3n.com/]
 [title=K0rz3n]
 [avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=TGibL5MwEXLYMficGYgTW6Dg&s=100]
@@ -79,11 +103,19 @@ date: 2019-09-01
 [url=http://f1sh.site]
 [title=f1sh]
 [avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=0XDI8mneicJQKQVjiaTjdhhg&s=100]
-%}
 
-### SS::STA
+[url=http://uprprc.net]
+[title=天上的因幡]
+[avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=3SJBLicKouGFppIZ2TE4GyA&s=100]
 
-{% friendlinks
+[url=http://www.gem-love.com/]
+[title=Y1ng]
+[avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=UzDeQomCiajzns8lKk0ibicfg&s=100]
+
+[url=http://hausa.vip]
+[title=Hausa]
+[avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=iaia6uKgFFHYNMfovV0pbgQA&s=100]
+
 [url=https://www.yichya.dev/]
 [title=yichya]
 [avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=7ZWBHlVUFCczlqu9YAw9LA&s=100]
@@ -103,11 +135,7 @@ date: 2019-09-01
 [url=https://blog.dapaostudio.com/]
 [title=Nouthest]
 [avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=tLz1Ac21iaictKAJJW7Q6y7g&s=100]
-%}
 
-### MSC
-
-{% friendlinks
 [url=https://blog.acteder.cn/]
 [title=actedeer]
 [avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=nH6iaB7A0SmsB49ic6iaj64Yw&s=100]
