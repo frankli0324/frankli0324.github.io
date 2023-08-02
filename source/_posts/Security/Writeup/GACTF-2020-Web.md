@@ -4,6 +4,7 @@ date: 2020-09-01
 tags: 
     - Writeup
     - CTF
+    - XCTF
 ---
 
 ## babyshop

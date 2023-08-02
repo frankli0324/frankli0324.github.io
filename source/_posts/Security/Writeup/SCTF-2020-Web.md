@@ -3,6 +3,7 @@ title: SCTF 2020 两道Web题 Writeup
 tags: 
     - Writeup
     - CTF
+    - XCTF
 date: 2020-7-7
 ---
 
