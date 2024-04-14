@@ -61,7 +61,7 @@ post:
 # Note: if start_year/end_year not provided, will use current year.
 copyright:
   start_year: 2017
-  end_year: 2023
+  end_year: 2024
 
 ##############################################################################
 # Look and Feel
