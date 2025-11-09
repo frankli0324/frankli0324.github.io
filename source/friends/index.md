@@ -52,7 +52,7 @@ date: 2019-09-01
 [title=赤道企鹅]
 [avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=giccl6lZXm7piagW5Y6WWibjg&s=100]
 
-[url=https://www.wootec.top]
+[url=https://blog.woooo.tech]
 [title=Reverier]
 [avatar=https://thirdqq.qlogo.cn/g?b=sdk&k=7PD14jYzQNoQ0KvkgCT3Xw&s=100]
 
