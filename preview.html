@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文件上传预览</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f5f7fa;
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #333;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { text-align: center; margin-bottom: 30px; color: #2c3e50; }
+  .drop-zone {
+    border: 2px dashed #4a90d9;
+    border-radius: 12px;
+    padding: 60px 20px;
+    text-align: center;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 30px;
+  }
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: #2563eb;
+    background: #eff6ff;
+    transform: translateY(-2px);
+  }
+  .drop-zone-icon { font-size: 48px; margin-bottom: 16px; }
+  .drop-zone-text { font-size: 18px; color: #555; margin-bottom: 8px; }
+  .drop-zone-hint { font-size: 14px; color: #999; }
+  #file-input { display: none; }
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .file-count { font-size: 14px; color: #666; }
+  .btn {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .btn-danger { background: #ef4444; color: #fff; }
+  .btn-danger:hover { background: #dc2626; }
+  .btn-danger:disabled { background: #fca5a5; cursor: not-allowed; }
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .preview-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+  .preview-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  }
+  .preview-media {
+    width: 100%;
+    height: 160px;
+    background: #f0f2f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .preview-media img, .preview-media video {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .file-icon { font-size: 56px; color: #94a3b8; }
+  .preview-info {
+    padding: 12px 14px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .file-name {
+    font-size: 14px; font-weight: 500; color: #1f2937;
+    word-break: break-all; line-height: 1.4;
+    max-height: 2.8em; overflow: hidden;
+  }
+  .file-meta { font-size: 12px; color: #6b7280; }
+  .file-type {
+    display: inline-block; background: #eef2ff; color: #4f46e5;
+    padding: 2px 8px; border-radius: 4px; font-size: 11px; align-self: flex-start;
+  }
+  .preview-actions {
+    padding: 0 14px 12px; display: flex; gap: 8px;
+  }
+  .action-btn {
+    flex: 1; padding: 6px; border: 1px solid #e5e7eb; background: #fff;
+    border-radius: 6px; font-size: 12px; cursor: pointer;
+    transition: all 0.2s; color: #4b5563;
+  }
+  .action-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+  .action-btn.remove:hover { background: #fef2f2; border-color: #fecaca; color: #dc2626; }
+  .empty-state {
+    text-align: center; padding: 60px 20px;
+    color: #9ca3af; font-size: 14px;
+  }
+  .modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85); z-index: 1000;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal.active { display: flex; }
+  .modal-content {
+    max-width: 90vw; max-height: 90vh; position: relative;
+  }
+  .modal-content img, .modal-content video {
+    max-width: 90vw; max-height: 85vh; display: block;
+  }
+  .modal-content iframe {
+    width: 85vw; height: 85vh; border: none; border-radius: 8px;
+  }
+  .modal-content pre {
+    background: #1e293b; color: #e2e8f0;
+    padding: 20px; border-radius: 8px;
+    max-width: 80vw; max-height: 80vh; overflow: auto;
+    font-size: 13px; line-height: 1.6;
+  }
+  .modal-close {
+    position: absolute; top: -40px; right: 0;
+    background: #fff; border: none;
+    width: 32px; height: 32px; border-radius: 50%;
+    cursor: pointer; font-size: 18px; font-weight: bold;
+  }
+  .toast {
+    position: fixed; bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937; color: #fff;
+    padding: 10px 20px; border-radius: 6px;
+    font-size: 14px; z-index: 2000;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>📤 文件上传预览</h1>
+    <label class="drop-zone" id="drop-zone" for="file-input">
+      <div class="drop-zone-icon">☁️</div>
+      <div class="drop-zone-text">点击或拖拽文件到此处</div>
+      <div class="drop-zone-hint">支持图片、视频、音频、PDF、文本等，仅在浏览器本地预览，不上传服务器</div>
+      <input type="file" id="file-input" multiple>
+    </label>
+    <div class="toolbar" id="toolbar" style="display:none;">
+      <span class="file-count" id="file-count">共 0 个文件</span>
+      <button class="btn btn-danger" id="clear-btn">清空全部</button>
+    </div>
+    <div class="preview-grid" id="preview-grid"></div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content" id="modal-content">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const fileInput = $('file-input');
+  const dropZone = $('drop-zone');
+  const previewGrid = $('preview-grid');
+  const toolbar = $('toolbar');
+  const fileCountEl = $('file-count');
+  const clearBtn = $('clear-btn');
+  const modal = $('modal');
+  const modalBody = $('modal-body');
+  const modalClose = $('modal-close');
+  const toastEl = $('toast');
+
+  let files = [];
+  let toastTimer;
+
+  const showToast = msg => {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2000);
+  };
+
+  const formatSize = bytes => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    if (bytes < 1024 * 1024 * 1024) return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+    return (bytes / 1024 / 1024 / 1024).toFixed(2) + ' GB';
+  };
+
+  const getCategory = (type, name) => {
+    if (type.startsWith('image/')) return 'image';
+    if (type.startsWith('video/')) return 'video';
+    if (type.startsWith('audio/')) return 'audio';
+    if (type === 'application/pdf') return 'pdf';
+    if (type.startsWith('text/') || /\.(txt|md|json|js|css|html?|xml|csv|log|ya?ml|ts|py|go|java|c|cpp|rs|sh)$/i.test(name)) return 'text';
+    return 'other';
+  };
+
+  const getIcon = c => ({image:'🖼️',video:'🎬',audio:'🎵',pdf:'📕',text:'📄',other:'📦'}[c] || '📦');
+
+  const addFiles = newFiles => {
+    const arr = Array.from(newFiles).filter(Boolean);
+    if (!arr.length) return;
+    arr.forEach(f => f._id = Date.now() + Math.random());
+    files = files.concat(arr);
+    render();
+    showToast(`已添加 ${arr.length} 个文件`);
+  };
+
+  const removeFile = id => { files = files.filter(f => f._id !== id); render(); };
+  const clearAll = () => { files = []; render(); showToast('已清空'); };
+
+  const render = () => {
+    previewGrid.innerHTML = '';
+    fileCountEl.textContent = `共 ${files.length} 个文件`;
+    toolbar.style.display = files.length ? 'flex' : 'none';
+    clearBtn.disabled = !files.length;
+
+    if (!files.length) {
+      previewGrid.innerHTML = '<div class="empty-state">暂无文件，请选择或拖拽文件上传</div>';
+      return;
+    }
+
+    const frag = document.createDocumentFragment();
+    files.forEach(file => {
+      const url = URL.createObjectURL(file);
+      const category = getCategory(file.type, file.name);
+      const card = document.createElement('div');
+      card.className = 'preview-card';
+
+      let media = '';
+      if (category === 'image') media = `<img src="${url}" alt="" loading="lazy">`;
+      else if (category === 'video') media = `<video src="${url}" muted preload="metadata"></video>`;
+      else if (category === 'audio') media = `<div class="file-icon">🎵</div><audio src="${url}" controls style="position:absolute;bottom:8px;width:90%;"></audio>`;
+      else media = `<div class="file-icon">${getIcon(category)}</div>`;
+
+      card.innerHTML = `
+        <div class="preview-media">${media}</div>
+        <div class="preview-info">
+          <div class="file-name" title="${file.name.replace(/"/g,'&quot;')}">${file.name}</div>
+          <span class="file-type">${file.type || '未知类型'}</span>
+          <div class="file-meta">${formatSize(file.size)}</div>
+        </div>
+        <div class="preview-actions">
+          <button class="action-btn" data-a="p">预览</button>
+          <button class="action-btn" data-a="d">下载</button>
+          <button class="action-btn remove" data-a="r">删除</button>
+        </div>`;
+
+      card.querySelectorAll('.action-btn').forEach(b => {
+        b.addEventListener('click', e => {
+          e.stopPropagation();
+          const a = b.dataset.a;
+          if (a === 'p') openPreview(file, url, category);
+          else if (a === 'd') download(file, url);
+          else { URL.revokeObjectURL(url); removeFile(file._id); }
+        });
+      });
+      card.querySelector('.preview-media').addEventListener('click', () => openPreview(file, url, category));
+      frag.appendChild(card);
+    });
+    previewGrid.appendChild(frag);
+  };
+
+  const openPreview = async (file, url, category) => {
+    modalBody.innerHTML = '';
+    const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    if (category === 'image') {
+      modalBody.innerHTML = `<img src="${url}" alt="">`;
+    } else if (category === 'video') {
+      modalBody.innerHTML = `<video src="${url}" controls autoplay></video>`;
+    } else if (category === 'audio') {
+      modalBody.innerHTML = `
+        <div style="background:#fff;padding:40px 60px;border-radius:12px;text-align:center;min-width:360px;">
+          <div style="font-size:80px;margin-bottom:20px;">🎵</div>
+          <div style="font-size:18px;color:#1f2937;margin-bottom:8px;">${esc(file.name)}</div>
+          <div style="font-size:13px;color:#6b7280;margin-bottom:20px;">${formatSize(file.size)} · ${file.type || '未知类型'}</div>
+          <audio src="${url}" controls autoplay style="width:400px;max-width:100%;"></audio>
+        </div>`;
+    } else if (category === 'pdf') {
+      modalBody.innerHTML = `<iframe src="${url}"></iframe>`;
+    } else if (category === 'text') {
+      try {
+        const text = await file.text();
+        const truncated = text.length > 100000 ? text.slice(0, 100000) + '\n\n... 已截断显示前 100000 字符' : text;
+        modalBody.innerHTML = `<pre><code></code></pre>`;
+        modalBody.querySelector('code').textContent = truncated;
+      } catch {
+        modalBody.innerHTML = `<div style="color:#fff;padding:40px;">无法读取文本内容</div>`;
+      }
+    } else {
+      modalBody.innerHTML = `
+        <div style="background:#fff;padding:60px 80px;border-radius:12px;text-align:center;min-width:360px;">
+          <div style="font-size:100px;margin-bottom:24px;">${getIcon(category)}</div>
+          <div style="font-size:20px;font-weight:500;color:#1f2937;margin-bottom:12px;">${esc(file.name)}</div>
+          <div style="font-size:14px;color:#6b7280;margin-bottom:24px;">${file.type || '未知类型'} · ${formatSize(file.size)}</div>
+          <div style="font-size:13px;color:#9ca3af;margin-bottom:24px;">此文件类型不支持内联预览，请下载后查看</div>
+          <button class="btn btn-danger" style="background:#2563eb;" id="modal-dl">下载文件</button>
+        </div>`;
+      setTimeout(() => {
+        const dl = $('modal-dl');
+        if (dl) dl.onclick = () => download(file, url);
+      }, 0);
+    }
+    modal.classList.add('active');
+  };
+
+  const closeModal = () => {
+    modal.classList.remove('active');
+    setTimeout(() => { modalBody.innerHTML = ''; }, 300);
+  };
+
+  const download = (file, url) => {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  // 事件
+  fileInput.addEventListener('change', e => { addFiles(e.target.files); e.target.value = ''; });
+  ['dragover','dragenter'].forEach(ev => dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.add('dragover'); }));
+  ['dragleave','drop'].forEach(ev => dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.remove('dragover'); }));
+  dropZone.addEventListener('drop', e => { if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files); });
+  clearBtn.addEventListener('click', () => { if (files.length && confirm('确定清空所有文件？')) clearAll(); });
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
+  document.addEventListener('paste', e => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    const arr = [];
+    for (const it of items) if (it.kind === 'file') arr.push(it.getAsFile());
+    if (arr.length) addFiles(arr);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
